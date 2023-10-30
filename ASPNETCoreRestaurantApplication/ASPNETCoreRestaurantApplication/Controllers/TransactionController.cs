@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ASPNETCoreRestaurantApplication.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ASPNETCoreRestaurantApplication.NewFolder;
 
 namespace ASPNETCoreRestaurantApplication.Controllers
 {
@@ -60,8 +61,18 @@ namespace ASPNETCoreRestaurantApplication.Controllers
                 _dbContext.Transactions.Add(newTransaction);
                 _dbContext.SaveChanges();
 
-                // Kembalikan respons CreatedAtAction bersama dengan data yang baru
-                return CreatedAtAction(nameof(GetTransactionById), new { id = newTransaction.transaction_id }, newTransaction);
+                // Map newTransaction to TransactionResponse
+                var transactionDto = new TransactionResponse
+                {
+                    TransactionId = newTransaction.transaction_id,
+                    CustomerId = newTransaction.customer_id,
+                    FoodId = newTransaction.food_id,
+                    Amount = newTransaction.amount,
+                    OrderDate = newTransaction.order_date
+                };
+
+                // Kembalikan respons CreatedAtAction bersama dengan DTO
+                return CreatedAtAction(nameof(GetTransactionById), new { id = newTransaction.transaction_id }, transactionDto);
             }
             catch (Exception ex)
             {
@@ -69,6 +80,7 @@ namespace ASPNETCoreRestaurantApplication.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
         [HttpGet]
         [Route("getTransactionById/{id}")]
@@ -142,8 +154,18 @@ namespace ASPNETCoreRestaurantApplication.Controllers
 
                 _dbContext.SaveChanges();
 
-                // Return CreatedAtAction response along with the updated data
-                return CreatedAtAction(nameof(GetTransactionById), new { id = existingTransaction.transaction_id }, existingTransaction);
+                // Map existingTransaction to TransactionDto
+                var transactionDto = new TransactionResponse
+                {
+                    TransactionId = existingTransaction.transaction_id,
+                    CustomerId = existingTransaction.customer_id,
+                    FoodId = existingTransaction.food_id,
+                    Amount = existingTransaction.amount,
+                    OrderDate = existingTransaction.order_date
+                };
+
+                // Return CreatedAtAction response along with the DTO
+                return CreatedAtAction(nameof(GetTransactionById), new { id = existingTransaction.transaction_id }, transactionDto);
             }
             catch (Exception ex)
             {
@@ -151,6 +173,7 @@ namespace ASPNETCoreRestaurantApplication.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
 
     }
 }

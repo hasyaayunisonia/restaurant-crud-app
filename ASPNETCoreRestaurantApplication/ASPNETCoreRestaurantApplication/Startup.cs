@@ -40,7 +40,7 @@ namespace ASPNETCoreRestaurantApplication
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ASPNETCoreRestaurantApplication", Version = "v1" });
             });
 
-            services.AddDbContext<RestaurantContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<CustomerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<FoodContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<TransactionContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

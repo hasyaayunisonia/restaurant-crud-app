@@ -9,7 +9,6 @@ using System.Data;
 using System.Data.SqlClient;
 using ASPNETCoreRestaurantApplication.Models;
 using Newtonsoft.Json;
-using ASPNETCoreRestaurantApplication.Dto.Response;
 using Microsoft.EntityFrameworkCore;
 
 namespace ASPNETCoreRestaurantApplication.Controllers
@@ -18,9 +17,9 @@ namespace ASPNETCoreRestaurantApplication.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        private readonly RestaurantContext _dbContext;
+        private readonly CustomerContext _dbContext;
 
-        public CustomerController(RestaurantContext dbContext)
+        public CustomerController(CustomerContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -51,17 +50,6 @@ namespace ASPNETCoreRestaurantApplication.Controllers
                 Console.WriteLine(ex.ToString());
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-        }
-
-
-
-        [HttpPost]
-        public async Task<ActionResult<Customer>> Post(Customer customer)
-        {
-            _dbContext.Customers.Add(customer);
-            await _dbContext.SaveChangesAsync();
-
-            return CreatedAtAction("GetCustomer", new { id = customer.customer_id}, customer);
         }
 
         [HttpPost]

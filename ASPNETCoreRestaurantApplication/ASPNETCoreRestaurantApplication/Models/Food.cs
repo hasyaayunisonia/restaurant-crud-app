@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,6 +23,8 @@ namespace ASPNETCoreRestaurantApplication.Models
         public string category { get; set; }
 
         // Properti navigasi
+
+        [JsonIgnore]
         public List<Transaction> Transactions { get; set; }
 
     }
